@@ -17,10 +17,10 @@ class TradingPair:
 
 @dataclass
 class GridConfig:
-    num_grids: int = 10
+    num_grids: int = 5  # Fewer grids for small portfolio
     upper_price_pct: float = 0.05  # 5% above current price
     lower_price_pct: float = 0.05  # 5% below current price
-    allocation_pct: float = 0.3  # 30% of portfolio per pair
+    allocation_pct: float = 0.15  # 15% of portfolio per pair (~$5 per grid order)
 
 
 @dataclass
@@ -33,7 +33,7 @@ class DCAConfig:
 
 @dataclass
 class RiskConfig:
-    max_risk_per_trade_pct: float = 0.02  # 2% max risk per trade
+    max_risk_per_trade_pct: float = 0.10  # 10% max risk per trade (for small $100 portfolio)
     max_drawdown_pct: float = 0.10  # 10% max drawdown before pause
     stop_loss_pct: float = 0.03  # 3% stop loss
     take_profit_pct: float = 0.05  # 5% take profit
@@ -61,23 +61,9 @@ class Config:
 
 
 # Default trading pairs for Kraken (USD pairs)
+# For $100 portfolio, focus on SOL (lower price = more tradeable units)
+# Add BTC/ETH back when scaling to $1000+
 DEFAULT_TRADING_PAIRS = [
-    TradingPair(
-        symbol="BTC/USD",
-        base="BTC",
-        quote="USD",
-        min_order_size=0.0001,
-        price_precision=1,
-        amount_precision=8,
-    ),
-    TradingPair(
-        symbol="ETH/USD",
-        base="ETH",
-        quote="USD",
-        min_order_size=0.001,
-        price_precision=2,
-        amount_precision=8,
-    ),
     TradingPair(
         symbol="SOL/USD",
         base="SOL",
